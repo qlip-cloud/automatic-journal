@@ -57,8 +57,10 @@ def ejecutar_proceso(args):
         try:
             doc = frappe.get_doc("Journal Entry", journal_entry)
             doc.submit()
+            frappe.db.commit()
 
         except Exception as error:
+            frappe.db.rollback()
             frappe.log_error(message=frappe.get_traceback(), title="validate_journal_entry {0}".format(journal_entry))
             pass
 
